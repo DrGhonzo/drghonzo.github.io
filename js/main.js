@@ -178,41 +178,4 @@
 
 })()
 
-function getData(){
-  fetch('https://randomuser.me/api/')
-  .then(response => response.json())
-  .then(data => showData(data.results[0]));
-}
-
-function showData(data){
-  let location;
-  for(var prop in data){
-    if (data.hasOwnProperty(prop)) {
-      if(typeof data[prop] == "object"){
-        showData(data[prop]);
-      }
-      else{
-        //console.log(prop+": "+data[prop]);
-        //$(prop).val(data[prop]);
-        
-        if(prop == "large"){
-          $("img[id="+prop+"]").attr("src", data[prop]);
-        }
-        else if(prop == "location"){
-          location = data[prop];
-          console.log("HERE: "+ location.street);
-          location = location.city +", "+ location.state +", "+ location.country;
-          
-          $("p[id="+prop+"]").text(location);
-        }
-        else{
-          let item = $("#"+prop);
-          item.text(data[prop]);
-        }
-        //console.log(item);
-        //document.getElementById(prop).innerHTML(data[prop]);
-      }
-    }
-  }
-}
 
