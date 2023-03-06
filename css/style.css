@@ -1345,3 +1345,9 @@ section {
   font-size: 13px;
   color: #fff;
 }
+
+#hero .hero-container {
+  position: relative;
+  z-index: 2;
+  min-width: 300px;
+}
