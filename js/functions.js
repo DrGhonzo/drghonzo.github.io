@@ -25,6 +25,9 @@ $(function(){
             if(prop == "large"){
               $("img[id="+prop+"]").attr("src", data[prop]);
             }
+            else if(prop=="gender"){
+              genderGenerator(data[prop]);
+            }
             else{
               item = $("#"+prop);
               item.text(data[prop]);
@@ -53,4 +56,15 @@ $(function(){
     }
     return result;
   }
+
+  function genderGenerator(data){
+    console.log(data);
+    let typed = $('.typed');
+    if(data == "female"){
+      typed.attr('data-typed-items',"Desarrolladora, Diseñadora, Freelancer");
+    }
+    console.log(typed);
+  }
+
+
 });
