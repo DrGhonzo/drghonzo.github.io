@@ -65,7 +65,7 @@ $(function(){
     }
     console.log(typed);
   }
-
+*/
 function getData() {
   fetch('https://randomuser.me/api/')
     .then(response => response.json())
@@ -96,7 +96,8 @@ function displayUser(user) {
     }
   }
 }
-*/
+
+/*
 async function getData() {
   try {
     const response = await fetch('https://randomuser.me/api/');
@@ -178,5 +179,5 @@ function genderGenerator(gender) {
       : ""; // Provide default items for male or other genders
   }
 }
-
+*/
 });
