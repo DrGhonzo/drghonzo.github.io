@@ -1,7 +1,7 @@
 $(function(){
 
   getData();
-
+/*
   function getData(){
     fetch('https://randomuser.me/api/')
     .then(response => response.json())
@@ -65,6 +65,36 @@ $(function(){
     }
     console.log(typed);
   }
+*/
+function getData() {
+  fetch('https://randomuser.me/api/')
+    .then(response => response.json())
+    .then(data => displayUser(data.results[0]));
+}
 
+function displayUser(user) {
+  // Update image directly
+  $('#large').attr('src', user.picture.large);
+
+  // Update gender-specific content
+  const typedElement = $('.typed');
+  typedElement.attr('data-typed-items', 
+    user.gender === 'female' ? "Desarrolladora, Diseñadora, Freelancer" : "Desarrollador, Diseñador, Freelancer"
+  );
+
+  // Update other fields using a mapping
+  const fieldMapping = {
+    'name': ['first', 'last'], // Combine first and last name
+    'email': null,
+    'location': ['street', 'city', 'state', 'country', 'postcode'] 
+  };
+
+  for (const [targetId, propPath] of Object.entries(fieldMapping)) {
+    if (propPath) {
+      const value = propPath.reduce((obj, prop) => obj?.[prop], user);
+      $('#' + targetId).text(value || ''); // Handle missing values
+    }
+  }
+}
 
 });
