@@ -65,7 +65,7 @@ $(function(){
     }
     console.log(typed);
   }
-*/
+
 function getData() {
   fetch('https://randomuser.me/api/')
     .then(response => response.json())
@@ -94,6 +94,88 @@ function displayUser(user) {
       const value = propPath.reduce((obj, prop) => obj?.[prop], user);
       $('#' + targetId).text(value || ''); // Handle missing values
     }
+  }
+}
+*/
+async function getData() {
+  try {
+    const response = await fetch('https://randomuser.me/api/');
+    const data = await response.json();
+    showData(data.results[0]);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    // Handle the error appropriately, e.g., display an error message to the user
+  }
+}
+
+function showData(data) {
+  const itemCache = {}; // Store references to already found elements
+
+  for (const prop in data) {
+    if (!data.hasOwnProperty(prop)) continue;
+
+    const value = data[prop];
+
+    if (value === null) continue;
+
+    if (typeof value === "object") {
+      if (prop === "location") {
+        const locationText = locationGenerator(value);
+        updateElementText(prop, locationText);
+      } else {
+        showData(value);
+      }
+    } else {
+      if (prop === "large") {
+        updateImageSrc(prop, value);
+      } else if (prop === "gender") {
+        genderGenerator(value);
+      } else {
+        updateElementText(prop, value);
+      }
+    }
+  }
+
+  function updateElementText(id, text) {
+    let item = itemCache[id];
+    if (!item) {
+      item = document.getElementById(id);
+      itemCache[id] = item;
+    }
+    if (item) {
+      item.textContent = text;
+    }
+  }
+
+  function updateImageSrc(id, src) {
+    const img = document.getElementById(id);
+    if (img) {
+      img.src = src;
+    }
+  }
+}
+
+function locationGenerator(data) {
+  const addressParts = [];
+  for (const prop in data) {
+    if (!data.hasOwnProperty(prop)) continue;
+
+    if (typeof data[prop] !== "object") {
+      addressParts.push(data[prop]);
+    } else if (prop === "street") {
+      addressParts.push(locationGenerator(data[prop]));
+    }
+  }
+  return addressParts.join(" ");
+}
+
+function genderGenerator(gender) {
+  console.log(gender);
+  const typed = document.querySelector('.typed');
+  if (typed) {
+    typed.dataset.typedItems = gender === "female"
+      ? "Desarrolladora, Diseñadora, Freelancer"
+      : ""; // Provide default items for male or other genders
   }
 }
 
